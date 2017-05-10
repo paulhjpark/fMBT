@@ -265,18 +265,36 @@ elif 'WC1-S' in cpuinfo:
     debug("detacted TW1, this is ad-hoc")
     hwKeyDevice = {
        "HOME": "gpio-keys"
-       # ,"POWER": "sci-keypad",
-       #  "BACK": "gpio-keys",
-       # "MENU": "sec_touchkey",
-       #  "VOLUMEUP": "tizen_detent",
-       #  "VOLUMEDOWN": "tizen_detent"
+#        ,"POWER": "sci-keypad",
+#         "BACK": "gpio-keys",
+#        "MENU": "sec_touchkey",
+#         "VOLUMEUP": "tizen_detent",
+#         "VOLUMEDOWN": "tizen_detent"
         }
     _inputKeyNameToCode["HOME"] = 116
-    # _inputKeyNameToCode["POWER"] = 116
-    # _inputKeyNameToCode["BACK"] = 116
-    # _inputKeyNameToCode["MENU"] = 169
-    # _inputKeyNameToCode["VOLUMEUP"] = 5
-    # _inputKeyNameToCode["VOLUMEDOWN"] = 7
+#    _inputKeyNameToCode["POWER"] = 116
+#     _inputKeyNameToCode["BACK"] = 116
+#    _inputKeyNameToCode["MENU"] = 169
+#     _inputKeyNameToCode["VOLUMEUP"] = 5
+#     _inputKeyNameToCode["VOLUMEDOWN"] = 7
+    if iAmRoot:
+        touch_device = openTouchDevice(_opt_touch, "name:sec_touchscreen")
+elif 'SOLIS-LTE' in cpuinfo:
+    debug("detacted TW2, this is ad-hoc")
+    hwKeyDevice = {
+        # "HOME": "s2mpw01-power-keys",
+        "POWER": "s2mpw01-power-keys",
+        "BACK": "gpio_keys"
+#        ,"MENU": "sec_touchkey",
+#         "VOLUMEUP": "tizen_detent",
+#         "VOLUMEDOWN": "tizen_detent"
+        }
+    # _inputKeyNameToCode["HOME"] = 139
+    _inputKeyNameToCode["POWER"] = 116
+    _inputKeyNameToCode["BACK"] = 158
+#    _inputKeyNameToCode["MENU"] = 169
+#     _inputKeyNameToCode["VOLUMEUP"] = 5
+#     _inputKeyNameToCode["VOLUMEDOWN"] = 7
     if iAmRoot:
         touch_device = openTouchDevice(_opt_touch, "name:sec_touchscreen")
 
@@ -793,12 +811,13 @@ def westonTakeScreenshotRoot(retry=2):
         result = 1
         # tm1
         if 'Z3' in cpuinfo:
-            result = os.system(
-                "XDG_RUNTIME_DIR=/run screenshooter-efl-util-32bit-armv7l -p /tmp/screenshot.png -w 360 -h 640")
+            result = os.system("XDG_RUNTIME_DIR=/run screenshooter-efl-util-32bit-armv7l -p /tmp/screenshot.png -w 360 -h 640")
         # tw1
         if 'WC1-S' in cpuinfo:
-            result = os.system(
-                "XDG_RUNTIME_DIR=/run screenshooter-efl-util-32bit-armv7l -p /tmp/screenshot.png -w 360 -h 360")
+            result = os.system("XDG_RUNTIME_DIR=/run screenshooter-efl-util-32bit-armv7l -p /tmp/screenshot.png -w 360 -h 360")
+        # tw2
+        if 'SOLIS-LTE' in cpuinfo:
+            result = os.system("XDG_RUNTIME_DIR=/run screenshooter-efl-util-32bit-armv7l -p /tmp/screenshot.png -w 360 -h 360")
 
         if result != 0:
             return False, "Failed to execute screenshooter"
@@ -1164,3 +1183,4 @@ if __name__ == "__main__":
 
     if hasTerminal:
         termios.tcsetattr(sys.stdin.fileno(), termios.TCSANOW, origTermAttrs)
+
